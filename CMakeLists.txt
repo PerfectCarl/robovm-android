@@ -6,6 +6,14 @@ include_directories(
   libnativehelper/include/nativehelper
 )
 
+if( WINDOWS )
+	include_directories(
+	  libcore/luni/src/main/native
+	)
+  add_definitions(-DMINGW_HAS_SECURE_API=1)
+
+endif() 
+
 add_definitions(-DICU_DATA_DIR="/usr/share/icu")
 if(IOS AND X86)
   add_definitions(-DICU_DATA_DIR_PREFIX_ENV_VAR="IPHONE_SIMULATOR_ROOT")

@@ -29,6 +29,11 @@
 
 #include <string>
 
+// Robovm note
+#ifdef WINDOWS
+#include "mingw-extensions.h"
+#endif
+
 /**
  * Equivalent to ScopedLocalRef, but for C_JNIEnv instead. (And slightly more powerful.)
  */

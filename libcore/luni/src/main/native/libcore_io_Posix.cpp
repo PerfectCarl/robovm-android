@@ -49,7 +49,10 @@
 #include <termios.h>
 
 #else
-
+// Get ALOGE
+#include <log/log.h>
+// CARL get iovec
+#include <log/uio.h>
 #include <ws2tcpip.h>
 #include <winsock2.h>
 #include "mingw-extensions.h"
@@ -64,6 +67,34 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
+// RoboVM note: Darwin doesn't have fdatasync. Use fsync instead.
+#if defined(__APPLE__)
+#   define fdatasync(fd) fsync(fd)
+#endif
+// RoboVM note: On Darwin struct flock, ftruncate, lseek, pread and pwrite are already 64-bit so there are no *64 versions.
+#if defined(__APPLE__)
+#   define flock64 flock
+#   define ftruncate64 ftruncate
+#   define lseek64 lseek
+#   define pread64 pread
+#   define pwrite64 pwrite
+#endif
+ // RoboVM note: The signature for sendfile on Linux and Darwin differs. This maps Linux's sendfile to Darwin's. 
+#if defined(__APPLE__)
+    static ssize_t sendfile(int out_fd, int in_fd, off_t* offset, size_t count) {
+        if (count <= 0) {
+            return 0;
+        }
+        off_t len = count;
+        int ret = sendfile(out_fd, in_fd, offset != NULL ? *offset : 0, &len, NULL, 0);
+        if (ret == 0 || ((errno == EAGAIN || errno == EINTR) && len > 0)) {
+            errno = 0;
+            if (offset != NULL) *offset += len;
+            return len;
+        }
+        return -1;
+    }
+#endif
 
 #define TO_JAVA_STRING(NAME, EXP) \
         jstring NAME = env->NewStringUTF(EXP); \
@@ -314,10 +345,10 @@ static jobject makeStructStatFs(JNIEnv* env, const struct statfs& sb) {
 
     jlong max_name_length = static_cast<jlong>(sb.f_namelen);
 #endif
-
-    static jmethodID ctor = env->GetMethodID(JniConstants::structStatFsClass, "<init>",
+	// CARL HACK renamed Class, I guess...
+    static jmethodID ctor = env->GetMethodID(JniConstants::structStatVfsClass, "<init>",
             "(JJJJJJJJ)V");
-    return env->NewObject(JniConstants::structStatFsClass, ctor, static_cast<jlong>(sb.f_bsize),
+    return env->NewObject(JniConstants::structStatVfsClass, ctor, static_cast<jlong>(sb.f_bsize),
             static_cast<jlong>(sb.f_blocks), static_cast<jlong>(sb.f_bfree),
             static_cast<jlong>(sb.f_bavail), static_cast<jlong>(sb.f_files),
             static_cast<jlong>(sb.f_ffree), max_name_length,

@@ -23,6 +23,14 @@
 #include <math.h>
 #include <stdlib.h>
 
+#if defined(__MINGW32__) || defined(__MINGW64__)
+// Robovm note : (Carl)
+// Error 
+//      use of undeclared identifier 'BUFSIZ'
+//    char buf[BUFSIZ]; // TODO: is there a more sensible upper bound?
+#include <stdio.h>
+#endif
+
 static jint Character_digitImpl(JNIEnv*, jclass, jint codePoint, jint radix) {
     return u_digit(codePoint, radix);
 }

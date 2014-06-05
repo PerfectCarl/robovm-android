@@ -4,6 +4,11 @@ include_directories(. ../i18n)
 
 add_definitions(-D_REENTRANT)
 add_definitions(-DU_COMMON_IMPLEMENTATION)
+# bionic doesn't have <langinfo.h>.
+add_definitions(-DU_HAVE_NL_LANGINFO_CODESET=0)
+# bionic has timezone instead of __timezone.
+add_definitions(-DU_TIMEZONE=timezone)
+
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-switch -Wno-enum-compare")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-parentheses -Wno-unused-function -Wno-deprecated-declarations")
 

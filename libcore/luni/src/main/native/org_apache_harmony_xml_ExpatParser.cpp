@@ -31,7 +31,8 @@
 #include "unicode/unistr.h"
 
 #include <string.h>
-#include <libexpat/expat.h>
+// CARL HACK fix
+#include <expat.h>
 
 #define BUCKET_COUNT 128
 

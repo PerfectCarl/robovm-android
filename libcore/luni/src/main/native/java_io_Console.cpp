@@ -21,11 +21,24 @@
 #include "JniConstants.h"
 
 #include <errno.h>
+
+// Robovm note: (Carl)
+#if defined(__MINGW32__) || defined(__MINGW64__)
+#include <windows.h>
+#include <wincon.h>
+#include <conio.h>
+#else
 #include <termios.h>
+#endif
+
 #include <unistd.h>
 
 static jint Console_setEchoImpl(JNIEnv* env, jclass, jboolean on, jint previousState) {
-    termios state;
+#if defined(__MINGW32__) || defined(__MINGW64__)
+	// CARL HACK 
+	return 0 ; 
+#else
+	termios state;
     if (TEMP_FAILURE_RETRY(tcgetattr(STDIN_FILENO, &state)) == -1) {
         jniThrowIOException(env, errno);
         return 0;
@@ -41,6 +54,7 @@ static jint Console_setEchoImpl(JNIEnv* env, jclass, jboolean on, jint previousS
         return 0;
     }
     return previousState;
+#endif
 }
 
 static JNINativeMethod gMethods[] = {

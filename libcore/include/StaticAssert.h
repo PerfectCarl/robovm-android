@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-#include "JniException.h"
-#include "JNIHelp.h"
+#ifndef STATIC_ASSERT_H_included
+#define STATIC_ASSERT_H_included
 
-#ifdef WINDOWS
-#include "mingw-extensions.h" 
-#endif
+/**
+ * Similar to C++0x's static_assert. Message argument must be a valid identifier, not a string.
+ * Called COMPILE_ASSERT in Google, COMPILE_TIME_ASSERT in other places. This is the usual Google
+ * implementation.
+ */
+#define STATIC_ASSERT(exp, msg) typedef StaticAssert<(bool(exp))> msg[bool(exp) ? 1 : -1]
+template <bool> struct StaticAssert {};
 
-void jniThrowExceptionWithErrno(JNIEnv* env, const char* exceptionClassName, int error) {
-    char buf[BUFSIZ];
-    jniThrowException(env, exceptionClassName, jniStrError(error, buf, sizeof(buf)));
-}
-
-void jniThrowOutOfMemoryError(JNIEnv* env, const char* message) {
-    jniThrowException(env, "java/lang/OutOfMemoryError", message);
-}
-
-void jniThrowSocketException(JNIEnv* env, int error) {
-    jniThrowExceptionWithErrno(env, "java/net/SocketException", error);
-}
+#endif  // STATIC_ASSERT_H_included

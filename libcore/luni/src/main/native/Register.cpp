@@ -20,6 +20,8 @@
 #include "ScopedLocalFrame.h"
 
 #include <stdlib.h>
+// CARL HACK
+#include <log/log.h>
 
 // DalvikVM calls this on startup, so we can statically register all our native methods.
 int JNI_OnLoad(JavaVM* vm, void*) {

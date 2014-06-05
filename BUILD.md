@@ -55,14 +55,6 @@ cd core
 git checkout tags/android-4.4_r0.7
 ```
 
-```
-git clone https://android.googlesource.com/platform/external/javasqlite/
-cd javasqlite
-git checkout tags/android-4.4_r0.7
-```
-
-TODO : system core 
-
 The two folders must be in the same parent folder 
 ```
  ;) > dir

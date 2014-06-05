@@ -23,6 +23,7 @@
 #include "JniException.h"
 #include "ScopedPrimitiveArray.h"
 #include "UniquePtr.h"
+// CARL can't be compiled with Clang
 #include "unicode/ubidi.h"
 
 #include <stdlib.h>

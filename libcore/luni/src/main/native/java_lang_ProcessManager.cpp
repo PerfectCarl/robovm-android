@@ -21,9 +21,14 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
+
+// Robovm note: (Carl)
+#if !defined(__MINGW32__) && !defined(__MINGW64__)
 #include <sys/resource.h>
-#include <sys/types.h>
 #include <sys/wait.h>
+#endif 
+
+#include <sys/types.h>
 #include <unistd.h>
 
 #include "cutils/log.h"
@@ -43,6 +48,9 @@ static void CloseNonStandardFds(int status_pipe_fd) {
   // but which on Solaris appears to be something quite different.
   fd_path = "/dev/fd";
 #endif
+
+#ifndef WINDOWS
+	// Carl HACK
 
   // Keep track of the system properties fd so we don't close it.
   int properties_fd = -1;
@@ -64,6 +72,7 @@ static void CloseNonStandardFds(int status_pipe_fd) {
     }
   }
   closedir(d);
+#endif
 }
 
 #define PIPE_COUNT 4 // Number of pipes used to communicate with child.
@@ -89,7 +98,8 @@ static pid_t ExecuteProcess(JNIEnv* env, char** commands, char** environment,
                             const char* workingDirectory, jobject inDescriptor,
                             jobject outDescriptor, jobject errDescriptor,
                             jboolean redirectErrorStream) {
-
+#ifndef WINDOWS
+	// CARL HACK
   // Create 4 pipes: stdin, stdout, stderr, and an exec() status pipe.
   int pipes[PIPE_COUNT * 2] = { -1, -1, -1, -1, -1, -1, -1, -1 };
   for (int i = 0; i < PIPE_COUNT; i++) {
@@ -199,6 +209,9 @@ static pid_t ExecuteProcess(JNIEnv* env, char** commands, char** environment,
   jniSetFileDescriptorOfFD(env, errDescriptor, stderrIn);
 
   return childPid;
+#else
+  return 0 ; 
+#endif
 }
 
 /**

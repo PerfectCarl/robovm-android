@@ -50,7 +50,11 @@ jobjectArray fromStringEnumeration(JNIEnv* env, StringEnumeration* se) {
     if (maybeThrowIcuException(env, "StringEnumeration::snext", status)) {
       return NULL;
     }
-    ScopedLocalRef<jstring> javaString(env, env->NewString(string->getBuffer(), string->length()));
+	// Error here:      
+	//           cannot initialize a parameter of type 'const jchar *' (aka 'const unsigned short *') 
+	//           with an rvalue of type 'const UChar *' (aka 'const wchar_t *')
+    // CARL HACK 
+	ScopedLocalRef<jstring> javaString(env, env->NewString((const jchar *)string->getBuffer(), string->length()));
     env->SetObjectArrayElement(result, i, javaString.get());
   }
   return result;

@@ -210,8 +210,11 @@ static void OsConstants_initConstants(JNIEnv* env, jclass c) {
     initConstant(env, c, "F_GETFD", F_GETFD);
     initConstant(env, c, "F_GETFL", F_GETFL);
     initConstant(env, c, "F_GETLK", F_GETLK);
+// RoboVM note: On Darwin struct flock is already 64-bit so we set F_GETLK64 = F_GETLK.
 #if defined(F_GETLK64)
     initConstant(env, c, "F_GETLK64", F_GETLK64);
+#else
+    initConstant(env, c, "F_GETLK64", F_GETLK);
 #endif
     initConstant(env, c, "F_GETOWN", F_GETOWN);
     initConstant(env, c, "F_OK", F_OK);
@@ -219,12 +222,18 @@ static void OsConstants_initConstants(JNIEnv* env, jclass c) {
     initConstant(env, c, "F_SETFD", F_SETFD);
     initConstant(env, c, "F_SETFL", F_SETFL);
     initConstant(env, c, "F_SETLK", F_SETLK);
+// RoboVM note: On Darwin struct flock is already 64-bit so we set F_SETLK64 = F_SETLK.
 #if defined(F_SETLK64)
     initConstant(env, c, "F_SETLK64", F_SETLK64);
+#else
+    initConstant(env, c, "F_SETLK64", F_SETLK);
 #endif
     initConstant(env, c, "F_SETLKW", F_SETLKW);
+// RoboVM note: On Darwin struct flock is already 64-bit so we set F_SETLKW64 = F_SETLKW.
 #if defined(F_SETLKW64)
     initConstant(env, c, "F_SETLKW64", F_SETLKW64);
+#else
+    initConstant(env, c, "F_SETLKW64", F_SETLKW);
 #endif
     initConstant(env, c, "F_SETOWN", F_SETOWN);
     initConstant(env, c, "F_UNLCK", F_UNLCK);

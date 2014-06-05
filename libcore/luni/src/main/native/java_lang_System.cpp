@@ -107,7 +107,9 @@ static jlong System_nanoTime(JNIEnv*, jclass) {
     return mach_absolute_time() * (info.numer / info.denom);
 #else
     timespec now;
-    clock_gettime(CLOCK_MONOTONIC, &now);
+// CARL HACK 
+//    clock_gettime(CLOCK_MONOTONIC, &now);
+
     return now.tv_sec * 1000000000LL + now.tv_nsec;
 #endif
 }
@@ -118,7 +120,7 @@ static jstring System_mapLibraryName(JNIEnv* env, jclass, jstring javaName) {
         return NULL;
     }
     char* mappedName = NULL;
-    asprintf(&mappedName, OS_SHARED_LIB_FORMAT_STR, name.c_str());
+    // CARL HACK asprintf(&mappedName, OS_SHARED_LIB_FORMAT_STR, name.c_str());
     jstring result = env->NewStringUTF(mappedName);
     free(mappedName);
     return result;

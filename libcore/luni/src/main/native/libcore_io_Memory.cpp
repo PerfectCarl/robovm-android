@@ -23,6 +23,23 @@
 #include "ScopedPrimitiveArray.h"
 #include "UniquePtr.h"
 
+// RoboVM note: Darwin has no byteswap.h
+#if defined(__APPLE__)
+#   include <libkern/OSByteOrder.h>
+#   define bswap_16(x) OSSwapInt16(x)
+#   define bswap_32(x) OSSwapInt32(x)
+#   define bswap_64(x) OSSwapInt64(x)
+#else
+// CARL mem 
+#ifdef WINDOWS
+#   define bswap_16(x) x
+#   define bswap_32(x) x
+#   define bswap_64(x) x
+#else
+#   include <byteswap.h>
+#endif // ifdef WINDOWS
+#endif // ifdef __APPLE__
+
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>

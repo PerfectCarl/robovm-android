@@ -30,7 +30,7 @@ add_subdirectory(external/expat)
 add_subdirectory(external/fdlibm)
 add_subdirectory(external/icu4c)
 add_subdirectory(external/javasqlite)
-# TMP add_subdirectory(external/openssl)
+add_subdirectory(external/openssl)
 if(NOT DARWIN)
   # Mac OS X and iOS ships with sqlite so we'll just use that
   add_subdirectory(external/sqlite)
@@ -44,7 +44,7 @@ set(ANDROID_OBJECTS
   ${EXTERNAL_FDLIBM_OBJECTS}
   ${EXTERNAL_ICU4C_OBJECTS}
   ${EXTERNAL_JAVASQLITE_OBJECTS}
-# TMP  ${EXTERNAL_OPENSSL_OBJECTS}
+  ${EXTERNAL_OPENSSL_OBJECTS}
   ${EXTERNAL_SQLITE_OBJECTS}
   ${EXTERNAL_ZLIB_OBJECTS}
   PARENT_SCOPE

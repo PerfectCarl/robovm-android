@@ -28,7 +28,7 @@ add_definitions(-DHAVE_ANDROID_OS=1)
 add_subdirectory(libnativehelper)
 add_subdirectory(external/expat)
 add_subdirectory(external/fdlibm)
-# TMP add_subdirectory(external/icu4c)
+add_subdirectory(external/icu4c)
 # CARL add_subdirectory(external/javasqlite)
 # TMP add_subdirectory(external/openssl)
 if(NOT DARWIN)
@@ -42,7 +42,7 @@ set(ANDROID_OBJECTS
   ${LIBNATIVEHELPER_OBJECTS} 
   ${EXTERNAL_EXPAT_OBJECTS} 
   ${EXTERNAL_FDLIBM_OBJECTS}
-# TMP  ${EXTERNAL_ICU4C_OBJECTS}
+  ${EXTERNAL_ICU4C_OBJECTS}
 # CARL  ${EXTERNAL_JAVASQLITE_OBJECTS}
 # TMP  ${EXTERNAL_OPENSSL_OBJECTS}
   ${EXTERNAL_SQLITE_OBJECTS}

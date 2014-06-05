@@ -67,7 +67,8 @@ typedef struct ULanguageTag {
 static const char EMPTY[] = "";
 static const char LANG_UND[] = "und";
 static const char PRIVATEUSE_KEY[] = "x";
-static const char _POSIX[] = "_POSIX";
+// RoboVM note: windows build renamed _POSIX to ICU4C_POSIX to avoid conflicts (Carl)
+static const char ICU4C_POSIX[] = "_POSIX";
 static const char POSIX_KEY[] = "va";
 static const char POSIX_VALUE[] = "posix";
 static const char LOCALE_ATTRIBUTE_KEY[] = "attribute";

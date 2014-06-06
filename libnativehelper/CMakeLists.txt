@@ -8,8 +8,18 @@ include_directories(
   include/nativehelper
 )
 
+if( WINDOWS ) 
+include_directories(
+  ../../../../dependencies/windows/dlfcn/include
+)
+endif()
+
 set(SRC
   JNIHelp.cpp
+  JniConstants.cpp
+# CARL do we need that file? It requires libc code.
+#  JniInvocation.cpp
+  toStringArray.cpp
 )
 
 add_library(android-libnativehelper OBJECT ${SRC})

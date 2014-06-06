@@ -24,9 +24,12 @@
 #define LOG_TAG "JniInvocation"
 #include "cutils/log.h"
 
+// CARL
+#ifndef WINDOWS
 #ifdef HAVE_ANDROID_OS
 #include "cutils/properties.h"
 #endif
+#endif 
 
 JniInvocation* JniInvocation::jni_invocation_ = NULL;
 
@@ -52,7 +55,8 @@ bool JniInvocation::Init(const char* library) {
   char default_library[PROPERTY_VALUE_MAX];
   property_get("persist.sys.dalvik.vm.lib", default_library, "libdvm.so");
 #else
-  const char* default_library = "libdvm.so";
+	// CARL HACK : what is this ??
+	const char* default_library = "libdvm.so";
 #endif
   if (library == NULL) {
     library = default_library;
